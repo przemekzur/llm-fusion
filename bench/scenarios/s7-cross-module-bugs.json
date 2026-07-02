@@ -1,0 +1,28 @@
+{
+  "id": "s7-cross-module-bugs",
+  "title": "Two interacting regressions across modules",
+  "taxonomy": "diagnosis-hard",
+  "hypothesis": "Quality discriminator: two planted bugs in different modules produce overlapping test failures. A weaker model may fix one, patch symptoms, or touch callers; correct outcome is two minimal root-cause fixes.",
+  "fixture": "todo-cli",
+  "prompt": "Several tests fail after recent changes to this project. Diagnose the root causes and fix them with the smallest possible changes. Do not modify any test files and do not modify the command modules in src/commands. `npm test` must fully pass when you are done.",
+  "mutations": [
+    {
+      "file": "src/store.js",
+      "find": "export function saveItems(items) {\n  writeFileSync(storePath(), JSON.stringify(items, null, 2) + \"\\n\", \"utf8\");\n}",
+      "replace": "export function saveItems(items) {\n  items.sort((a, b) => a.title.localeCompare(b.title));\n  writeFileSync(storePath(), JSON.stringify(items, null, 2) + \"\\n\", \"utf8\");\n}"
+    },
+    {
+      "file": "src/todo.js",
+      "find": "remaining: items.filter((item) => !item.done).length,",
+      "replace": "remaining: items.filter((item) => item.done).length,"
+    }
+  ],
+  "blockers": [
+    { "type": "command", "run": "npm test" }
+  ],
+  "nonBlockers": [
+    { "id": "scope", "type": "scope", "allowed": ["src/store.js", "src/todo.js"], "weight": 3 },
+    { "id": "minimal-diff", "type": "maxDiffLines", "limit": 10, "weight": 2 }
+  ],
+  "timeoutMinutes": 30
+}

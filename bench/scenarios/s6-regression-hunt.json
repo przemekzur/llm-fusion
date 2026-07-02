@@ -1,0 +1,23 @@
+{
+  "id": "s6-regression-hunt",
+  "title": "Regression hunt with a minimal fix",
+  "taxonomy": "diagnosis",
+  "hypothesis": "Mixed: localization is delegable (sidekick runs tests, bisects), but choosing the minimal fix is judgment. Fusion should tie solo quality with less coordinator time.",
+  "fixture": "todo-cli",
+  "prompt": "After a recent change to the persistence layer, some CLI tests fail. The problem is in the store; fix it there with the smallest possible change. Do not modify callers or tests. `npm test` must pass when you are done.",
+  "mutations": [
+    {
+      "file": "src/store.js",
+      "find": "export function saveItems(items) {\n  writeFileSync(storePath(), JSON.stringify(items, null, 2) + \"\\n\", \"utf8\");\n}",
+      "replace": "export function saveItems(items) {\n  items.sort((a, b) => a.title.localeCompare(b.title));\n  writeFileSync(storePath(), JSON.stringify(items, null, 2) + \"\\n\", \"utf8\");\n}"
+    }
+  ],
+  "blockers": [
+    { "type": "command", "run": "npm test" }
+  ],
+  "nonBlockers": [
+    { "id": "scope", "type": "scope", "allowed": ["src/store.js"], "weight": 3 },
+    { "id": "minimal-diff", "type": "maxDiffLines", "limit": 6, "weight": 1 }
+  ],
+  "timeoutMinutes": 25
+}

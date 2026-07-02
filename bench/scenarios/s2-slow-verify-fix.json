@@ -1,0 +1,23 @@
+{
+  "id": "s2-slow-verify-fix",
+  "title": "Bug fix behind a slow test suite",
+  "taxonomy": "test-heavy",
+  "hypothesis": "Fusion should save the most here: the sidekick babysits the slow suite while the coordinator only reasons about the failure and the fix.",
+  "fixture": "todo-cli",
+  "prompt": "The stats command reports a wrong `remaining` count in some states and part of the test suite is failing. Find the bug, fix it minimally, and make the whole test suite (`npm test`) pass. Do not change any tests.",
+  "mutations": [
+    {
+      "file": "src/todo.js",
+      "find": "remaining: items.filter((item) => !item.done).length,",
+      "replace": "remaining: items.filter((item) => item.done).length,"
+    }
+  ],
+  "blockers": [
+    { "type": "command", "run": "npm test" }
+  ],
+  "nonBlockers": [
+    { "id": "scope", "type": "scope", "allowed": ["src/todo.js"], "weight": 3 },
+    { "id": "minimal-diff", "type": "maxDiffLines", "limit": 6, "weight": 1 }
+  ],
+  "timeoutMinutes": 25
+}

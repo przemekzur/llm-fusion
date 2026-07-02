@@ -1,0 +1,58 @@
+{
+  "name": "llm-fusion",
+  "version": "0.1.0",
+  "description": "A local, self-hosted take on Devin Fusion: a smart coordinator LLM CLI delegates work to cheaper sidekick agents. Give it a goal and the autopilot classifies, routes cheap-first, verifies, and escalates on failure, all in live terminals with a built-in cost benchmark.",
+  "license": "MIT",
+  "author": "przemekzur",
+  "keywords": [
+    "llm",
+    "ai-agents",
+    "coding-agent",
+    "claude",
+    "codex",
+    "terminal",
+    "pty",
+    "orchestration",
+    "devin-fusion",
+    "cost-optimization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/przemekzur/llm-fusion.git"
+  },
+  "homepage": "https://github.com/przemekzur/llm-fusion#readme",
+  "bugs": {
+    "url": "https://github.com/przemekzur/llm-fusion/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server/index.ts",
+    "build": "tsc -p tsconfig.server.json && vite build",
+    "start": "node dist/server/server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "vitest run tests/smoke.test.ts"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
+    "express": "^5.1.0",
+    "node-pty": "^1.0.0",
+    "ws": "^8.18.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.10",
+    "@types/supertest": "^6.0.3",
+    "@types/ws": "^8.18.1",
+    "supertest": "^7.1.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
+  }
+}

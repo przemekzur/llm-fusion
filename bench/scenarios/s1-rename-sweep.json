@@ -1,0 +1,18 @@
+{
+  "id": "s1-rename-sweep",
+  "title": "Mechanical rename sweep",
+  "taxonomy": "mechanical",
+  "hypothesis": "Fusion should match solo-coordinator quality at lower cost: the sweep is delegable, the coordinator only reviews the diff.",
+  "fixture": "todo-cli",
+  "prompt": "Rename the helper `renderLine` to `formatEntry` everywhere in this project: source code, tests, and documentation. Behavior must not change and `npm test` must pass when you are done.",
+  "mutations": [],
+  "blockers": [
+    { "type": "command", "run": "npm test" },
+    { "type": "absent", "pattern": "renderLine", "extensions": [".js", ".md"] }
+  ],
+  "nonBlockers": [
+    { "id": "scope", "type": "scope", "allowed": ["src/", "tests/", "README.md"], "weight": 2 },
+    { "id": "docs-updated", "type": "present", "pattern": "formatEntry", "file": "README.md", "weight": 1 }
+  ],
+  "timeoutMinutes": 20
+}

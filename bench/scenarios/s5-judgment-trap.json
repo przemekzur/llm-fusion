@@ -1,0 +1,18 @@
+{
+  "id": "s5-judgment-trap",
+  "title": "Convention judgment call (delegation trap)",
+  "taxonomy": "judgment-heavy",
+  "hypothesis": "The trap scenario: per Devin Fusion, delegating judgment loses quality. The fusion coordinator should keep the convention decision itself; if it delegates the whole task, expect the wrong convention or sloppy conversion.",
+  "fixture": "todo-cli",
+  "prompt": "Error handling across the CLI commands in src/commands is inconsistent. Unify all commands to the codebase's prevailing error-handling convention. Do not change observable behavior or exit codes, and `npm test` must still pass.",
+  "mutations": [],
+  "blockers": [
+    { "type": "command", "run": "npm test" }
+  ],
+  "nonBlockers": [
+    { "id": "picked-dominant", "type": "absent", "pattern": "process\\.exit\\(2\\)", "extensions": [".js"], "within": "src/commands", "weight": 3 },
+    { "id": "cli-still-maps", "type": "present", "pattern": "CliError", "file": "src/cli.js", "weight": 1 },
+    { "id": "scope", "type": "scope", "allowed": ["src/"], "weight": 1 }
+  ],
+  "timeoutMinutes": 25
+}

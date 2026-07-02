@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="LLM Fusion autopilot flow">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#7d8590"/>
+    </marker>
+    <marker id="arrowUp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#d29922"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="440" fill="#0d1117"/>
+
+  <text x="40" y="48" font-size="20" font-weight="700" fill="#e6edf3">How the autopilot decides</text>
+  <text x="40" y="72" font-size="14" fill="#7d8590">One goal in. Classified, routed cheapest-first, verified, and escalated on failure — every step in the ledger.</text>
+
+  <!-- 1. goal -->
+  <g transform="translate(40,120)">
+    <rect width="180" height="96" rx="10" fill="#161b22" stroke="#30363d"/>
+    <text x="18" y="30" font-size="13" font-weight="600" fill="#7d8590">YOU</text>
+    <text x="18" y="56" font-size="15" fill="#e6edf3">Goal + workspace</text>
+    <text x="18" y="78" font-size="15" fill="#e6edf3">+ verify command</text>
+  </g>
+  <line x1="220" y1="168" x2="280" y2="168" stroke="#7d8590" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 2. classifier -->
+  <g transform="translate(282,120)">
+    <rect width="168" height="96" rx="10" fill="#161b22" stroke="#30363d"/>
+    <text x="18" y="30" font-size="13" font-weight="600" fill="#7d8590">CLASSIFY</text>
+    <text x="18" y="56" font-size="15" fill="#e6edf3">Cheap model reads</text>
+    <text x="18" y="78" font-size="15" fill="#e6edf3">the task, picks a route</text>
+  </g>
+  <line x1="450" y1="168" x2="510" y2="168" stroke="#7d8590" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 3. routes -->
+  <g transform="translate(512,96)">
+    <text x="0" y="-8" font-size="13" font-weight="600" fill="#7d8590">ROUTE</text>
+    <!-- cheap -->
+    <g transform="translate(0,0)">
+      <rect width="250" height="40" rx="8" fill="#0d1117" stroke="#238636"/>
+      <circle cx="18" cy="20" r="5" fill="#3fb950"/>
+      <text x="34" y="25" font-size="14" fill="#e6edf3"><tspan font-weight="600">cheap</tspan> — sidekick solo</text>
+    </g>
+    <!-- frontier -->
+    <g transform="translate(0,50)">
+      <rect width="250" height="40" rx="8" fill="#0d1117" stroke="#30363d"/>
+      <circle cx="18" cy="20" r="5" fill="#adbac7"/>
+      <text x="34" y="25" font-size="14" fill="#e6edf3"><tspan font-weight="600">frontier</tspan> — coordinator solo</text>
+    </g>
+    <!-- fusion -->
+    <g transform="translate(0,100)">
+      <rect width="250" height="40" rx="8" fill="#0d1117" stroke="#1f6feb"/>
+      <circle cx="18" cy="20" r="5" fill="#58a6ff"/>
+      <text x="34" y="25" font-size="14" fill="#e6edf3"><tspan font-weight="600">fusion</tspan> — plan · delegate · review</text>
+    </g>
+  </g>
+  <line x1="762" y1="168" x2="822" y2="168" stroke="#7d8590" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 4. verify -->
+  <g transform="translate(824,120)">
+    <rect width="150" height="96" rx="10" fill="#161b22" stroke="#30363d"/>
+    <text x="18" y="30" font-size="13" font-weight="600" fill="#7d8590">VERIFY</text>
+    <text x="18" y="56" font-size="15" fill="#e6edf3">Run your</text>
+    <text x="18" y="78" font-size="15" fill="#e6edf3">verify command</text>
+  </g>
+
+  <!-- pass -->
+  <line x1="974" y1="150" x2="1034" y2="150" stroke="#3fb950" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="984" y="140" font-size="12" fill="#3fb950" font-weight="600">pass</text>
+  <g transform="translate(1036,122)">
+    <rect width="124" height="56" rx="10" fill="#0d1117" stroke="#238636"/>
+    <text x="20" y="34" font-size="15" font-weight="600" fill="#3fb950">Done ✓</text>
+  </g>
+
+  <!-- fail loop -->
+  <text x="880" y="248" font-size="12" fill="#d29922" font-weight="600">fail → escalate</text>
+  <path d="M899 216 L899 300 L364 300 L364 216" fill="none" stroke="#d29922" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowUp)"/>
+  <text x="470" y="292" font-size="13" fill="#7d8590">revert failed attempt (git clean-slate) · retry on the frontier model</text>
+
+  <!-- terminals note -->
+  <g transform="translate(40,344)">
+    <rect width="1120" height="64" rx="10" fill="#161b22" stroke="#30363d"/>
+    <path d="M22 26 l10 7 l-10 7 M36 40 h12" fill="none" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="64" y="30" font-size="14" fill="#e6edf3" font-weight="600">Every agent runs in a real PTY you can watch live.</text>
+    <text x="64" y="52" font-size="13" fill="#7d8590">Coordinator + sidekicks stream into a terminal grid. Token usage is harvested from CLI transcripts and priced for the report.</text>
+  </g>
+</svg>

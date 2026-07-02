@@ -1,0 +1,56 @@
+{
+  "id": "s8-fleet-sweep",
+  "title": "Helper extraction across a 24-module fleet",
+  "taxonomy": "mechanical-scaled",
+  "hypothesis": "Cost discriminator: touching 24 generated modules means the bulk of tokens go to reading/editing files. Fusion should push that bulk onto the cheap sidekick; opus-solo pays frontier rates for mechanical work.",
+  "fixture": "todo-cli",
+  "prompt": "Every module in src/reports duplicates the same logic inline: renderLine(item).toUpperCase(). Add a renderUpper(item) helper to src/render.js that returns renderLine(item).toUpperCase(), then update EVERY module in src/reports to use renderUpper instead of the inline expression. Behavior must not change and `npm test` must pass when you are done.",
+  "mutations": [],
+  "generate": [
+    {
+      "path": "src/reports/report-{{NN}}.js",
+      "count": 24,
+      "content": [
+        "import { renderLine } from \"../render.js\";",
+        "",
+        "export function report{{NN}}(items) {",
+        "  return items.map((item) => renderLine(item).toUpperCase()).join(\"\\n\");",
+        "}"
+      ]
+    },
+    {
+      "path": "tests/reports.test.js",
+      "content": [
+        "import test from \"node:test\";",
+        "import assert from \"node:assert/strict\";",
+        "import { readdirSync } from \"node:fs\";",
+        "import { dirname, join } from \"node:path\";",
+        "import { fileURLToPath, pathToFileURL } from \"node:url\";",
+        "",
+        "const reportsDir = join(dirname(fileURLToPath(import.meta.url)), \"..\", \"src\", \"reports\");",
+        "",
+        "test(\"all report modules render uppercase lines\", async () => {",
+        "  const files = readdirSync(reportsDir).filter((file) => file.endsWith(\".js\")).sort();",
+        "  assert.equal(files.length, 24);",
+        "  const items = [{ id: 7, title: \"ship it\", done: false }];",
+        "  for (const file of files) {",
+        "    const mod = await import(pathToFileURL(join(reportsDir, file)).href);",
+        "    const fn = Object.values(mod).find((value) => typeof value === \"function\");",
+        "    assert.equal(fn(items), \"[ ] #7 SHIP IT\");",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "blockers": [
+    { "type": "command", "run": "npm test" },
+    { "type": "absent", "pattern": "toUpperCase", "extensions": [".js"], "within": "src/reports" },
+    { "type": "present", "pattern": "renderUpper", "file": "src/render.js" }
+  ],
+  "nonBlockers": [
+    { "id": "helper-used", "type": "present", "pattern": "renderUpper", "file": "src/reports/report-01.js", "weight": 2 },
+    { "id": "scope", "type": "scope", "allowed": ["src/"], "weight": 2 },
+    { "id": "reasonable-diff", "type": "maxDiffLines", "limit": 140, "weight": 1 }
+  ],
+  "timeoutMinutes": 40
+}

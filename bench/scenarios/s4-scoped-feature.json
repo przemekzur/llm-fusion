@@ -1,0 +1,20 @@
+{
+  "id": "s4-scoped-feature",
+  "title": "Well-specified small feature",
+  "taxonomy": "straightforward-implementation",
+  "hypothesis": "Fusion should hold quality at lower cost: the spec is unambiguous, so implementation is delegable and the coordinator reviews.",
+  "fixture": "todo-cli",
+  "prompt": "Add an `export` command to the CLI: `node src/cli.js export --json` prints all stored items as pretty-printed JSON to stdout; running it without `--json` must print a usage message and exit with code 2. Follow the codebase's dominant error-handling convention, register the command in src/cli.js, add tests for both paths, and keep `npm test` passing.",
+  "mutations": [],
+  "blockers": [
+    { "type": "command", "run": "npm test" },
+    { "type": "cli", "args": ["export", "--json"], "expectExit": 0, "parseJson": true },
+    { "type": "cli", "args": ["export"], "expectExit": 2 }
+  ],
+  "nonBlockers": [
+    { "id": "dominant-convention", "type": "present", "pattern": "fail\\(", "file": "src/commands/export.js", "weight": 2 },
+    { "id": "tests-added", "type": "present", "pattern": "export", "file": "tests/cli.test.js", "weight": 1 },
+    { "id": "scope", "type": "scope", "allowed": ["src/", "tests/", "README.md"], "weight": 1 }
+  ],
+  "timeoutMinutes": 30
+}

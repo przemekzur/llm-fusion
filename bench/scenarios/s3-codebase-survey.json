@@ -1,0 +1,21 @@
+{
+  "id": "s3-codebase-survey",
+  "title": "Broad codebase survey report",
+  "taxonomy": "broad-search",
+  "hypothesis": "Fusion should be cheaper and as complete: sidekicks fan out over files, the coordinator synthesizes the report.",
+  "fixture": "todo-cli",
+  "prompt": "Write a file named ARCHITECTURE.md at the project root that documents: (1) every CLI command and what it does, (2) where data is persisted and in what format, (3) the two different error-handling styles used in src/commands and which files use each, and (4) how the test suites are organized, including the fast/slow split and the SLOW_MS variable. Do not change any other file.",
+  "mutations": [],
+  "blockers": [
+    { "type": "present", "pattern": "persist", "file": "ARCHITECTURE.md" }
+  ],
+  "nonBlockers": [
+    { "id": "all-commands", "type": "present", "pattern": "clear", "file": "ARCHITECTURE.md", "weight": 1 },
+    { "id": "store-format", "type": "present", "pattern": "TODO_FILE", "file": "ARCHITECTURE.md", "weight": 1 },
+    { "id": "error-style-a", "type": "present", "pattern": "CliError", "file": "ARCHITECTURE.md", "weight": 1 },
+    { "id": "error-style-b", "type": "present", "pattern": "process.exit", "file": "ARCHITECTURE.md", "weight": 1 },
+    { "id": "slow-suite", "type": "present", "pattern": "SLOW_MS", "file": "ARCHITECTURE.md", "weight": 1 },
+    { "id": "scope", "type": "scope", "allowed": ["ARCHITECTURE.md"], "weight": 2 }
+  ],
+  "timeoutMinutes": 20
+}
